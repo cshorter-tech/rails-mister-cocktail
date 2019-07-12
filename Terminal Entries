@@ -1,0 +1,1033 @@
+1) Run Set Up
+
+2) Develop Schema - Columns are Singular w/ CapName
+
+3) Generate the Model
+rails g model Cocktail name:string
+rails g model Ingredient name:string
+rails g model Doses description:string Cocktail:reference, Ingredient:reference
+
+4) Check the Model
+see model file
+see migration file
+make sure references are there
+
+5) Migrate
+rails db:migrate
+
+6) Check/Rollback
+➜  rails-mister-cocktail git:(master) ✗ rails db:migrate 
+
+➜  rails-mister-cocktail git:(master) ✗ rails c 
+
+irb(main):001:0>  Cocktail.create!(name: "Mojito") 
+
+
+irb(main):002:0> Ingredient.create!(name: "Rum") 
+
+
+irb(main):003:0> Ingredient.create!(name: "Mint") 
+
+
+irb(main):004:0> Dose.create!(description: "10ML", ingredient: Ingredient.find_by(name: "mint"), cocktail: Cocktail.find(0)) 
+
+
+irb(main):005:0> Dose.create!(description: "10ML", ingredient: Ingredient.find_by(name: "mint"), cocktail: Cocktail.first) 
+
+irb(main):006:0> Dose.create!(description: "10ML", ingredient: Ingredient.find_by(name: "Mint"), cocktail: Cocktail.first) 
+
+irb(main):007:0> variable_mojito = Cocktail.first 
+
+
+irb(main):008:0> variable_mojito 
+
+
+irb(main):009:0> variable_mojito.doses 
+
+
+irb(main):010:0> variable_mojito.ingredients 
+
+
+irb(main):011:0> Dose.create!(description: "10ML", ingredient: Ingredient.find_by(name: "Rum"), cocktail: Cocktail.first) 
+
+
+irb(main):012:0> variable_mojito.ingredients 
+
+
+irb(main):014:0> variable_mojito.ingredients.each { |ingredient| p ingredient } 
+
+
+irb(main):015:0> dose = Dose.last 
+
+
+irb(main):016:0> dose.cocktail 
+
+
+irb(main):017:0> dose.ingredient 
+
+
+7) Validations & Associations (model folder)
+check via rails console
+
+8) Seed (db folder)
+https://kitt.lewagon.com/knowledge/lectures/01-Ruby%2F06-Parsing#source
+
+
+➜  rails-mister-cocktail git:(master) ✗ rail db:migrate
+zsh: command not found: rail
+➜  rails-mister-cocktail git:(master) ✗ rails db:migrate
+warning ../../../package.json: No license field                                
+== 20190712100008 CreateCocktails: migrating ==================================
+-- create_table(:cocktails)
+rails aborted!
+StandardError: An error has occurred, this and all later migrations canceled:
+
+PG::DuplicateTable: ERROR:  relation "cocktails" already exists
+: CREATE TABLE "cocktails" ("id" bigserial primary key, "name" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/migrate/20190712100008_create_cocktails.rb:3:in `change'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/rails:9:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/spring:15:in `<top (required)>'
+bin/rails:3:in `load'
+bin/rails:3:in `<main>'
+
+Caused by:
+ActiveRecord::StatementInvalid: PG::DuplicateTable: ERROR:  relation "cocktails" already exists
+: CREATE TABLE "cocktails" ("id" bigserial primary key, "name" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/migrate/20190712100008_create_cocktails.rb:3:in `change'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/rails:9:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/spring:15:in `<top (required)>'
+bin/rails:3:in `load'
+bin/rails:3:in `<main>'
+
+Caused by:
+PG::DuplicateTable: ERROR:  relation "cocktails" already exists
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/migrate/20190712100008_create_cocktails.rb:3:in `change'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/rails:9:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/spring:15:in `<top (required)>'
+bin/rails:3:in `load'
+bin/rails:3:in `<main>'
+Tasks: TOP => db:migrate
+(See full trace by running task with --trace)
+➜  rails-mister-cocktail git:(master) ✗ rails c
+Running via Spring preloader in process 22703
+Loading development environment (Rails 5.2.3)
+irb(main):001:0> ^C
+irb(main):001:0> exit
+➜  rails-mister-cocktail git:(master) ✗ rails c
+Running via Spring preloader in process 30438
+Loading development environment (Rails 5.2.3)
+irb(main):001:0> exit
+➜  rails-mister-cocktail git:(master) ✗ ruby db/seeds.rb
+"Destroy everything"
+Traceback (most recent call last):
+db/seeds.rb:21:in `<main>': undefined local variable or method `ingredients_json' for main:Object (NameError)
+Did you mean?  ingredients_JSON
+➜  rails-mister-cocktail git:(master) ✗ ruby db/seeds.rb
+"Destroy everything"
+{"drinks"=>[{"strIngredient1"=>"Light rum"}, {"strIngredient1"=>"Applejack"}, {"strIngredient1"=>"Gin"}, {"strIngredient1"=>"Dark rum"}, {"strIngredient1"=>"Sweet Vermouth"}, {"strIngredient1"=>"Strawberry schnapps"}, {"strIngredient1"=>"Scotch"}, {"strIngredient1"=>"Apricot brandy"}, {"strIngredient1"=>"Triple sec"}, {"strIngredient1"=>"Southern Comfort"}, {"strIngredient1"=>"Orange bitters"}, {"strIngredient1"=>"Brandy"}, {"strIngredient1"=>"Lemon vodka"}, {"strIngredient1"=>"Blended whiskey"}, {"strIngredient1"=>"Dry Vermouth"}, {"strIngredient1"=>"Amaretto"}, {"strIngredient1"=>"Tea"}, {"strIngredient1"=>"Champagne"}, {"strIngredient1"=>"Coffee liqueur"}, {"strIngredient1"=>"Bourbon"}, {"strIngredient1"=>"Tequila"}, {"strIngredient1"=>"Vodka"}, {"strIngredient1"=>"Añejo rum"}, {"strIngredient1"=>"Bitters"}, {"strIngredient1"=>"Sugar"}, {"strIngredient1"=>"Kahlua"}, {"strIngredient1"=>"demerara Sugar"}, {"strIngredient1"=>"Dubonnet Rouge"}, {"strIngredient1"=>"Lime juice"}, {"strIngredient1"=>"Irish whiskey"}, {"strIngredient1"=>"Apple brandy"}, {"strIngredient1"=>"Carbonated water"}, {"strIngredient1"=>"Cherry brandy"}, {"strIngredient1"=>"Creme de Cacao"}, {"strIngredient1"=>"Grenadine"}, {"strIngredient1"=>"Port"}, {"strIngredient1"=>"Coffee brandy"}, {"strIngredient1"=>"Red wine"}, {"strIngredient1"=>"Rum"}, {"strIngredient1"=>"Grapefruit juice"}, {"strIngredient1"=>"Ricard"}, {"strIngredient1"=>"Sherry"}, {"strIngredient1"=>"Cognac"}, {"strIngredient1"=>"Sloe gin"}, {"strIngredient1"=>"Apple juice"}, {"strIngredient1"=>"Pineapple juice"}, {"strIngredient1"=>"Lemon juice"}, {"strIngredient1"=>"Sugar syrup"}, {"strIngredient1"=>"Milk"}, {"strIngredient1"=>"Strawberries"}, {"strIngredient1"=>"Chocolate syrup"}, {"strIngredient1"=>"Yoghurt"}, {"strIngredient1"=>"Mango"}, {"strIngredient1"=>"Ginger"}, {"strIngredient1"=>"Lime"}, {"strIngredient1"=>"Cantaloupe"}, {"strIngredient1"=>"Berries"}, {"strIngredient1"=>"Grapes"}, {"strIngredient1"=>"Kiwi"}, {"strIngredient1"=>"Tomato juice"}, {"strIngredient1"=>"Cocoa powder"}, {"strIngredient1"=>"Chocolate"}, {"strIngredient1"=>"Heavy cream"}, {"strIngredient1"=>"Galliano"}, {"strIngredient1"=>"Peach Vodka"}, {"strIngredient1"=>"Ouzo"}, {"strIngredient1"=>"Coffee"}, {"strIngredient1"=>"Spiced rum"}, {"strIngredient1"=>"Water"}, {"strIngredient1"=>"Espresso"}, {"strIngredient1"=>"Angelica root"}, {"strIngredient1"=>"Orange"}, {"strIngredient1"=>"Cranberries"}, {"strIngredient1"=>"Johnnie Walker"}, {"strIngredient1"=>"Apple cider"}, {"strIngredient1"=>"Everclear"}, {"strIngredient1"=>"Cranberry juice"}, {"strIngredient1"=>"Egg yolk"}, {"strIngredient1"=>"Egg"}, {"strIngredient1"=>"Grape juice"}, {"strIngredient1"=>"Peach nectar"}, {"strIngredient1"=>"Lemon"}, {"strIngredient1"=>"Firewater"}, {"strIngredient1"=>"Lemonade"}, {"strIngredient1"=>"Lager"}, {"strIngredient1"=>"Whiskey"}, {"strIngredient1"=>"Absolut Citron"}, {"strIngredient1"=>"Pisco"}, {"strIngredient1"=>"Irish cream"}, {"strIngredient1"=>"Ale"}, {"strIngredient1"=>"Chocolate liqueur"}, {"strIngredient1"=>"Midori melon liqueur"}, {"strIngredient1"=>"Sambuca"}, {"strIngredient1"=>"Cider"}, {"strIngredient1"=>"Sprite"}, {"strIngredient1"=>"7-Up"}, {"strIngredient1"=>"Blackberry brandy"}, {"strIngredient1"=>"Peppermint schnapps"}, {"strIngredient1"=>"Creme de Cassis"}, {"strIngredient1"=>"Jack Daniels"}, {"strIngredient1"=>"Bailey's irish cream"}, {"strIngredient1"=>"151 proof rum"}, {"strIngredient1"=>"Absolut Vodka"}, {"strIngredient1"=>"Goldschlager"}, {"strIngredient1"=>"Crown Royal"}, {"strIngredient1"=>"Cointreau"}, {"strIngredient1"=>"Vermouth"}, {"strIngredient1"=>"Advocaat"}, {"strIngredient1"=>"Absolut Kurant"}, {"strIngredient1"=>"Beer"}, {"strIngredient1"=>"Kool-Aid"}, {"strIngredient1"=>"Cherry Heering"}, {"strIngredient1"=>"White Creme de Menthe"}, {"strIngredient1"=>"Malibu rum"}, {"strIngredient1"=>"Vanilla vodka"}, {"strIngredient1"=>"Jägermeister"}, {"strIngredient1"=>"Kiwi liqueur"}, {"strIngredient1"=>"Grand Marnier"}, {"strIngredient1"=>"Cachaca"}, {"strIngredient1"=>"Peachtree schnapps"}, {"strIngredient1"=>"Wild Turkey"}, {"strIngredient1"=>"Cranberry vodka"}, {"strIngredient1"=>"Corona"}, {"strIngredient1"=>"Orange juice"}, {"strIngredient1"=>"Yukon Jack"}, {"strIngredient1"=>"Chocolate ice-cream"}, {"strIngredient1"=>"Coconut rum"}, {"strIngredient1"=>"Banana liqueur"}, {"strIngredient1"=>"Black Sambuca"}, {"strIngredient1"=>"Hot Damn"}, {"strIngredient1"=>"Mint"}, {"strIngredient1"=>"Campari"}, {"strIngredient1"=>"Ice"}, {"strIngredient1"=>"Sour mix"}, {"strIngredient1"=>"Absinthe"}, {"strIngredient1"=>"Whisky"}, {"strIngredient1"=>"Guinness stout"}, {"strIngredient1"=>"Vanilla ice-cream"}, {"strIngredient1"=>"Chambord raspberry liqueur"}, {"strIngredient1"=>"Jim Beam"}, {"strIngredient1"=>"Godiva liqueur"}, {"strIngredient1"=>"Fruit punch"}, {"strIngredient1"=>"Baileys irish cream"}, {"strIngredient1"=>"Zima"}, {"strIngredient1"=>"Blue Curacao"}, {"strIngredient1"=>"Coca-Cola"}, {"strIngredient1"=>"Maui"}, {"strIngredient1"=>"Frangelico"}, {"strIngredient1"=>"Bacardi Limon"}, {"strIngredient1"=>"Raspberry vodka"}, {"strIngredient1"=>"Green Creme de Menthe"}, {"strIngredient1"=>"Lemon peel"}, {"strIngredient1"=>"Prosecco"}, {"strIngredient1"=>"White Rum"}, {"strIngredient1"=>"Mezcal"}, {"strIngredient1"=>"Green Chartreuse"}, {"strIngredient1"=>"Grape Soda"}, {"strIngredient1"=>"Hot Chocolate"}, {"strIngredient1"=>"Blended Scotch"}, {"strIngredient1"=>"Rye whiskey"}]}
+"Iterating over my ingredients hash"
+Traceback (most recent call last):
+db/seeds.rb:24:in `<main>': undefined local variable or method `ingredients_json' for main:Object (NameError)
+Did you mean?  ingredients_JSON
+➜  rails-mister-cocktail git:(master) ✗ ruby db/seeds.rb
+"Destroy everything"
+{"drinks"=>[{"strIngredient1"=>"Light rum"}, {"strIngredient1"=>"Applejack"}, {"strIngredient1"=>"Gin"}, {"strIngredient1"=>"Dark rum"}, {"strIngredient1"=>"Sweet Vermouth"}, {"strIngredient1"=>"Strawberry schnapps"}, {"strIngredient1"=>"Scotch"}, {"strIngredient1"=>"Apricot brandy"}, {"strIngredient1"=>"Triple sec"}, {"strIngredient1"=>"Southern Comfort"}, {"strIngredient1"=>"Orange bitters"}, {"strIngredient1"=>"Brandy"}, {"strIngredient1"=>"Lemon vodka"}, {"strIngredient1"=>"Blended whiskey"}, {"strIngredient1"=>"Dry Vermouth"}, {"strIngredient1"=>"Amaretto"}, {"strIngredient1"=>"Tea"}, {"strIngredient1"=>"Champagne"}, {"strIngredient1"=>"Coffee liqueur"}, {"strIngredient1"=>"Bourbon"}, {"strIngredient1"=>"Tequila"}, {"strIngredient1"=>"Vodka"}, {"strIngredient1"=>"Añejo rum"}, {"strIngredient1"=>"Bitters"}, {"strIngredient1"=>"Sugar"}, {"strIngredient1"=>"Kahlua"}, {"strIngredient1"=>"demerara Sugar"}, {"strIngredient1"=>"Dubonnet Rouge"}, {"strIngredient1"=>"Lime juice"}, {"strIngredient1"=>"Irish whiskey"}, {"strIngredient1"=>"Apple brandy"}, {"strIngredient1"=>"Carbonated water"}, {"strIngredient1"=>"Cherry brandy"}, {"strIngredient1"=>"Creme de Cacao"}, {"strIngredient1"=>"Grenadine"}, {"strIngredient1"=>"Port"}, {"strIngredient1"=>"Coffee brandy"}, {"strIngredient1"=>"Red wine"}, {"strIngredient1"=>"Rum"}, {"strIngredient1"=>"Grapefruit juice"}, {"strIngredient1"=>"Ricard"}, {"strIngredient1"=>"Sherry"}, {"strIngredient1"=>"Cognac"}, {"strIngredient1"=>"Sloe gin"}, {"strIngredient1"=>"Apple juice"}, {"strIngredient1"=>"Pineapple juice"}, {"strIngredient1"=>"Lemon juice"}, {"strIngredient1"=>"Sugar syrup"}, {"strIngredient1"=>"Milk"}, {"strIngredient1"=>"Strawberries"}, {"strIngredient1"=>"Chocolate syrup"}, {"strIngredient1"=>"Yoghurt"}, {"strIngredient1"=>"Mango"}, {"strIngredient1"=>"Ginger"}, {"strIngredient1"=>"Lime"}, {"strIngredient1"=>"Cantaloupe"}, {"strIngredient1"=>"Berries"}, {"strIngredient1"=>"Grapes"}, {"strIngredient1"=>"Kiwi"}, {"strIngredient1"=>"Tomato juice"}, {"strIngredient1"=>"Cocoa powder"}, {"strIngredient1"=>"Chocolate"}, {"strIngredient1"=>"Heavy cream"}, {"strIngredient1"=>"Galliano"}, {"strIngredient1"=>"Peach Vodka"}, {"strIngredient1"=>"Ouzo"}, {"strIngredient1"=>"Coffee"}, {"strIngredient1"=>"Spiced rum"}, {"strIngredient1"=>"Water"}, {"strIngredient1"=>"Espresso"}, {"strIngredient1"=>"Angelica root"}, {"strIngredient1"=>"Orange"}, {"strIngredient1"=>"Cranberries"}, {"strIngredient1"=>"Johnnie Walker"}, {"strIngredient1"=>"Apple cider"}, {"strIngredient1"=>"Everclear"}, {"strIngredient1"=>"Cranberry juice"}, {"strIngredient1"=>"Egg yolk"}, {"strIngredient1"=>"Egg"}, {"strIngredient1"=>"Grape juice"}, {"strIngredient1"=>"Peach nectar"}, {"strIngredient1"=>"Lemon"}, {"strIngredient1"=>"Firewater"}, {"strIngredient1"=>"Lemonade"}, {"strIngredient1"=>"Lager"}, {"strIngredient1"=>"Whiskey"}, {"strIngredient1"=>"Absolut Citron"}, {"strIngredient1"=>"Pisco"}, {"strIngredient1"=>"Irish cream"}, {"strIngredient1"=>"Ale"}, {"strIngredient1"=>"Chocolate liqueur"}, {"strIngredient1"=>"Midori melon liqueur"}, {"strIngredient1"=>"Sambuca"}, {"strIngredient1"=>"Cider"}, {"strIngredient1"=>"Sprite"}, {"strIngredient1"=>"7-Up"}, {"strIngredient1"=>"Blackberry brandy"}, {"strIngredient1"=>"Peppermint schnapps"}, {"strIngredient1"=>"Creme de Cassis"}, {"strIngredient1"=>"Jack Daniels"}, {"strIngredient1"=>"Bailey's irish cream"}, {"strIngredient1"=>"151 proof rum"}, {"strIngredient1"=>"Absolut Vodka"}, {"strIngredient1"=>"Goldschlager"}, {"strIngredient1"=>"Crown Royal"}, {"strIngredient1"=>"Cointreau"}, {"strIngredient1"=>"Vermouth"}, {"strIngredient1"=>"Advocaat"}, {"strIngredient1"=>"Absolut Kurant"}, {"strIngredient1"=>"Beer"}, {"strIngredient1"=>"Kool-Aid"}, {"strIngredient1"=>"Cherry Heering"}, {"strIngredient1"=>"White Creme de Menthe"}, {"strIngredient1"=>"Malibu rum"}, {"strIngredient1"=>"Vanilla vodka"}, {"strIngredient1"=>"Jägermeister"}, {"strIngredient1"=>"Kiwi liqueur"}, {"strIngredient1"=>"Grand Marnier"}, {"strIngredient1"=>"Cachaca"}, {"strIngredient1"=>"Peachtree schnapps"}, {"strIngredient1"=>"Wild Turkey"}, {"strIngredient1"=>"Cranberry vodka"}, {"strIngredient1"=>"Corona"}, {"strIngredient1"=>"Orange juice"}, {"strIngredient1"=>"Yukon Jack"}, {"strIngredient1"=>"Chocolate ice-cream"}, {"strIngredient1"=>"Coconut rum"}, {"strIngredient1"=>"Banana liqueur"}, {"strIngredient1"=>"Black Sambuca"}, {"strIngredient1"=>"Hot Damn"}, {"strIngredient1"=>"Mint"}, {"strIngredient1"=>"Campari"}, {"strIngredient1"=>"Ice"}, {"strIngredient1"=>"Sour mix"}, {"strIngredient1"=>"Absinthe"}, {"strIngredient1"=>"Whisky"}, {"strIngredient1"=>"Guinness stout"}, {"strIngredient1"=>"Vanilla ice-cream"}, {"strIngredient1"=>"Chambord raspberry liqueur"}, {"strIngredient1"=>"Jim Beam"}, {"strIngredient1"=>"Godiva liqueur"}, {"strIngredient1"=>"Fruit punch"}, {"strIngredient1"=>"Baileys irish cream"}, {"strIngredient1"=>"Zima"}, {"strIngredient1"=>"Blue Curacao"}, {"strIngredient1"=>"Coca-Cola"}, {"strIngredient1"=>"Maui"}, {"strIngredient1"=>"Frangelico"}, {"strIngredient1"=>"Bacardi Limon"}, {"strIngredient1"=>"Raspberry vodka"}, {"strIngredient1"=>"Green Creme de Menthe"}, {"strIngredient1"=>"Lemon peel"}, {"strIngredient1"=>"Prosecco"}, {"strIngredient1"=>"White Rum"}, {"strIngredient1"=>"Mezcal"}, {"strIngredient1"=>"Green Chartreuse"}, {"strIngredient1"=>"Grape Soda"}, {"strIngredient1"=>"Hot Chocolate"}, {"strIngredient1"=>"Blended Scotch"}, {"strIngredient1"=>"Rye whiskey"}]}
+"Iterating over my ingredients hash"
+"Creating Light rum"
+"Creating Applejack"
+"Creating Gin"
+"Creating Dark rum"
+"Creating Sweet Vermouth"
+"Creating Strawberry schnapps"
+"Creating Scotch"
+"Creating Apricot brandy"
+"Creating Triple sec"
+"Creating Southern Comfort"
+"Creating Orange bitters"
+"Creating Brandy"
+"Creating Lemon vodka"
+"Creating Blended whiskey"
+"Creating Dry Vermouth"
+"Creating Amaretto"
+"Creating Tea"
+"Creating Champagne"
+"Creating Coffee liqueur"
+"Creating Bourbon"
+"Creating Tequila"
+"Creating Vodka"
+"Creating Añejo rum"
+"Creating Bitters"
+"Creating Sugar"
+"Creating Kahlua"
+"Creating demerara Sugar"
+"Creating Dubonnet Rouge"
+"Creating Lime juice"
+"Creating Irish whiskey"
+"Creating Apple brandy"
+"Creating Carbonated water"
+"Creating Cherry brandy"
+"Creating Creme de Cacao"
+"Creating Grenadine"
+"Creating Port"
+"Creating Coffee brandy"
+"Creating Red wine"
+"Creating Rum"
+"Creating Grapefruit juice"
+"Creating Ricard"
+"Creating Sherry"
+"Creating Cognac"
+"Creating Sloe gin"
+"Creating Apple juice"
+"Creating Pineapple juice"
+"Creating Lemon juice"
+"Creating Sugar syrup"
+"Creating Milk"
+"Creating Strawberries"
+"Creating Chocolate syrup"
+"Creating Yoghurt"
+"Creating Mango"
+"Creating Ginger"
+"Creating Lime"
+"Creating Cantaloupe"
+"Creating Berries"
+"Creating Grapes"
+"Creating Kiwi"
+"Creating Tomato juice"
+"Creating Cocoa powder"
+"Creating Chocolate"
+"Creating Heavy cream"
+"Creating Galliano"
+"Creating Peach Vodka"
+"Creating Ouzo"
+"Creating Coffee"
+"Creating Spiced rum"
+"Creating Water"
+"Creating Espresso"
+"Creating Angelica root"
+"Creating Orange"
+"Creating Cranberries"
+"Creating Johnnie Walker"
+"Creating Apple cider"
+"Creating Everclear"
+"Creating Cranberry juice"
+"Creating Egg yolk"
+"Creating Egg"
+"Creating Grape juice"
+"Creating Peach nectar"
+"Creating Lemon"
+"Creating Firewater"
+"Creating Lemonade"
+"Creating Lager"
+"Creating Whiskey"
+"Creating Absolut Citron"
+"Creating Pisco"
+"Creating Irish cream"
+"Creating Ale"
+"Creating Chocolate liqueur"
+"Creating Midori melon liqueur"
+"Creating Sambuca"
+"Creating Cider"
+"Creating Sprite"
+"Creating 7-Up"
+"Creating Blackberry brandy"
+"Creating Peppermint schnapps"
+"Creating Creme de Cassis"
+"Creating Jack Daniels"
+"Creating Bailey's irish cream"
+"Creating 151 proof rum"
+"Creating Absolut Vodka"
+"Creating Goldschlager"
+"Creating Crown Royal"
+"Creating Cointreau"
+"Creating Vermouth"
+"Creating Advocaat"
+"Creating Absolut Kurant"
+"Creating Beer"
+"Creating Kool-Aid"
+"Creating Cherry Heering"
+"Creating White Creme de Menthe"
+"Creating Malibu rum"
+"Creating Vanilla vodka"
+"Creating Jägermeister"
+"Creating Kiwi liqueur"
+"Creating Grand Marnier"
+"Creating Cachaca"
+"Creating Peachtree schnapps"
+"Creating Wild Turkey"
+"Creating Cranberry vodka"
+"Creating Corona"
+"Creating Orange juice"
+"Creating Yukon Jack"
+"Creating Chocolate ice-cream"
+"Creating Coconut rum"
+"Creating Banana liqueur"
+"Creating Black Sambuca"
+"Creating Hot Damn"
+"Creating Mint"
+"Creating Campari"
+"Creating Ice"
+"Creating Sour mix"
+"Creating Absinthe"
+"Creating Whisky"
+"Creating Guinness stout"
+"Creating Vanilla ice-cream"
+"Creating Chambord raspberry liqueur"
+"Creating Jim Beam"
+"Creating Godiva liqueur"
+"Creating Fruit punch"
+"Creating Baileys irish cream"
+"Creating Zima"
+"Creating Blue Curacao"
+"Creating Coca-Cola"
+"Creating Maui"
+"Creating Frangelico"
+"Creating Bacardi Limon"
+"Creating Raspberry vodka"
+"Creating Green Creme de Menthe"
+"Creating Lemon peel"
+"Creating Prosecco"
+"Creating White Rum"
+"Creating Mezcal"
+"Creating Green Chartreuse"
+"Creating Grape Soda"
+"Creating Hot Chocolate"
+"Creating Blended Scotch"
+"Creating Rye whiskey"
+"finished!"
+➜  rails-mister-cocktail git:(master) ✗ rails db:seed
+warning ../../../package.json: No license field                                                                                          
+You have 3 pending migrations:
+  20190712100008 CreateCocktails
+  20190712100038 CreateIngredients
+  20190712100052 CreateDoses
+Run `rails db:migrate` to update your database then try again.
+➜  rails-mister-cocktail git:(master) ✗ rails db:migrate
+warning ../../../package.json: No license field                                                                                          
+== 20190712100008 CreateCocktails: migrating ==================================
+-- create_table(:cocktails)
+rails aborted!
+StandardError: An error has occurred, this and all later migrations canceled:
+
+PG::DuplicateTable: ERROR:  relation "cocktails" already exists
+: CREATE TABLE "cocktails" ("id" bigserial primary key, "name" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/migrate/20190712100008_create_cocktails.rb:3:in `change'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/rails:9:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/spring:15:in `<top (required)>'
+bin/rails:3:in `load'
+bin/rails:3:in `<main>'
+
+Caused by:
+ActiveRecord::StatementInvalid: PG::DuplicateTable: ERROR:  relation "cocktails" already exists
+: CREATE TABLE "cocktails" ("id" bigserial primary key, "name" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/migrate/20190712100008_create_cocktails.rb:3:in `change'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/rails:9:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/spring:15:in `<top (required)>'
+bin/rails:3:in `load'
+bin/rails:3:in `<main>'
+
+Caused by:
+PG::DuplicateTable: ERROR:  relation "cocktails" already exists
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/migrate/20190712100008_create_cocktails.rb:3:in `change'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/rails:9:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/spring:15:in `<top (required)>'
+bin/rails:3:in `load'
+bin/rails:3:in `<main>'
+Tasks: TOP => db:migrate
+(See full trace by running task with --trace)
+➜  rails-mister-cocktail git:(master) ✗ rails db:drop db:create db:migrate
+warning ../../../package.json: No license field                                                                                          
+Dropped database 'rails-mister-cocktail_development'
+Dropped database 'rails-mister-cocktail_test'
+Created database 'rails-mister-cocktail_development'
+Created database 'rails-mister-cocktail_test'
+== 20190712100008 CreateCocktails: migrating ==================================
+-- create_table(:cocktails)
+   -> 0.0111s
+== 20190712100008 CreateCocktails: migrated (0.0112s) =========================
+
+== 20190712100038 CreateIngredients: migrating ================================
+-- create_table(:ingredients)
+   -> 0.0177s
+== 20190712100038 CreateIngredients: migrated (0.0177s) =======================
+
+== 20190712100052 CreateDoses: migrating ======================================
+-- create_table(:doses)
+   -> 0.0522s
+== 20190712100052 CreateDoses: migrated (0.0523s) =============================
+
+➜  rails-mister-cocktail git:(master) ✗ rails db:seed
+warning ../../../package.json: No license field                                                                                          
+"Destroy everything"
+rails aborted!
+NameError: uninitialized constant Ingredients
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/seeds.rb:12:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/rails:9:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/spring:15:in `<top (required)>'
+bin/rails:3:in `load'
+bin/rails:3:in `<main>'
+
+Caused by:
+NameError: uninitialized constant Ingredients
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/seeds.rb:12:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/rails:9:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/spring:15:in `<top (required)>'
+bin/rails:3:in `load'
+bin/rails:3:in `<main>'
+Tasks: TOP => db:seed
+(See full trace by running task with --trace)
+➜  rails-mister-cocktail git:(master) ✗ rails db:seed
+warning ../../../package.json: No license field                                                                                          
+"Destroy everything"
+{"drinks"=>[{"strIngredient1"=>"Light rum"}, {"strIngredient1"=>"Applejack"}, {"strIngredient1"=>"Gin"}, {"strIngredient1"=>"Dark rum"}, {"strIngredient1"=>"Sweet Vermouth"}, {"strIngredient1"=>"Strawberry schnapps"}, {"strIngredient1"=>"Scotch"}, {"strIngredient1"=>"Apricot brandy"}, {"strIngredient1"=>"Triple sec"}, {"strIngredient1"=>"Southern Comfort"}, {"strIngredient1"=>"Orange bitters"}, {"strIngredient1"=>"Brandy"}, {"strIngredient1"=>"Lemon vodka"}, {"strIngredient1"=>"Blended whiskey"}, {"strIngredient1"=>"Dry Vermouth"}, {"strIngredient1"=>"Amaretto"}, {"strIngredient1"=>"Tea"}, {"strIngredient1"=>"Champagne"}, {"strIngredient1"=>"Coffee liqueur"}, {"strIngredient1"=>"Bourbon"}, {"strIngredient1"=>"Tequila"}, {"strIngredient1"=>"Vodka"}, {"strIngredient1"=>"Añejo rum"}, {"strIngredient1"=>"Bitters"}, {"strIngredient1"=>"Sugar"}, {"strIngredient1"=>"Kahlua"}, {"strIngredient1"=>"demerara Sugar"}, {"strIngredient1"=>"Dubonnet Rouge"}, {"strIngredient1"=>"Lime juice"}, {"strIngredient1"=>"Irish whiskey"}, {"strIngredient1"=>"Apple brandy"}, {"strIngredient1"=>"Carbonated water"}, {"strIngredient1"=>"Cherry brandy"}, {"strIngredient1"=>"Creme de Cacao"}, {"strIngredient1"=>"Grenadine"}, {"strIngredient1"=>"Port"}, {"strIngredient1"=>"Coffee brandy"}, {"strIngredient1"=>"Red wine"}, {"strIngredient1"=>"Rum"}, {"strIngredient1"=>"Grapefruit juice"}, {"strIngredient1"=>"Ricard"}, {"strIngredient1"=>"Sherry"}, {"strIngredient1"=>"Cognac"}, {"strIngredient1"=>"Sloe gin"}, {"strIngredient1"=>"Apple juice"}, {"strIngredient1"=>"Pineapple juice"}, {"strIngredient1"=>"Lemon juice"}, {"strIngredient1"=>"Sugar syrup"}, {"strIngredient1"=>"Milk"}, {"strIngredient1"=>"Strawberries"}, {"strIngredient1"=>"Chocolate syrup"}, {"strIngredient1"=>"Yoghurt"}, {"strIngredient1"=>"Mango"}, {"strIngredient1"=>"Ginger"}, {"strIngredient1"=>"Lime"}, {"strIngredient1"=>"Cantaloupe"}, {"strIngredient1"=>"Berries"}, {"strIngredient1"=>"Grapes"}, {"strIngredient1"=>"Kiwi"}, {"strIngredient1"=>"Tomato juice"}, {"strIngredient1"=>"Cocoa powder"}, {"strIngredient1"=>"Chocolate"}, {"strIngredient1"=>"Heavy cream"}, {"strIngredient1"=>"Galliano"}, {"strIngredient1"=>"Peach Vodka"}, {"strIngredient1"=>"Ouzo"}, {"strIngredient1"=>"Coffee"}, {"strIngredient1"=>"Spiced rum"}, {"strIngredient1"=>"Water"}, {"strIngredient1"=>"Espresso"}, {"strIngredient1"=>"Angelica root"}, {"strIngredient1"=>"Orange"}, {"strIngredient1"=>"Cranberries"}, {"strIngredient1"=>"Johnnie Walker"}, {"strIngredient1"=>"Apple cider"}, {"strIngredient1"=>"Everclear"}, {"strIngredient1"=>"Cranberry juice"}, {"strIngredient1"=>"Egg yolk"}, {"strIngredient1"=>"Egg"}, {"strIngredient1"=>"Grape juice"}, {"strIngredient1"=>"Peach nectar"}, {"strIngredient1"=>"Lemon"}, {"strIngredient1"=>"Firewater"}, {"strIngredient1"=>"Lemonade"}, {"strIngredient1"=>"Lager"}, {"strIngredient1"=>"Whiskey"}, {"strIngredient1"=>"Absolut Citron"}, {"strIngredient1"=>"Pisco"}, {"strIngredient1"=>"Irish cream"}, {"strIngredient1"=>"Ale"}, {"strIngredient1"=>"Chocolate liqueur"}, {"strIngredient1"=>"Midori melon liqueur"}, {"strIngredient1"=>"Sambuca"}, {"strIngredient1"=>"Cider"}, {"strIngredient1"=>"Sprite"}, {"strIngredient1"=>"7-Up"}, {"strIngredient1"=>"Blackberry brandy"}, {"strIngredient1"=>"Peppermint schnapps"}, {"strIngredient1"=>"Creme de Cassis"}, {"strIngredient1"=>"Jack Daniels"}, {"strIngredient1"=>"Bailey's irish cream"}, {"strIngredient1"=>"151 proof rum"}, {"strIngredient1"=>"Absolut Vodka"}, {"strIngredient1"=>"Goldschlager"}, {"strIngredient1"=>"Crown Royal"}, {"strIngredient1"=>"Cointreau"}, {"strIngredient1"=>"Vermouth"}, {"strIngredient1"=>"Advocaat"}, {"strIngredient1"=>"Absolut Kurant"}, {"strIngredient1"=>"Beer"}, {"strIngredient1"=>"Kool-Aid"}, {"strIngredient1"=>"Cherry Heering"}, {"strIngredient1"=>"White Creme de Menthe"}, {"strIngredient1"=>"Malibu rum"}, {"strIngredient1"=>"Vanilla vodka"}, {"strIngredient1"=>"Jägermeister"}, {"strIngredient1"=>"Kiwi liqueur"}, {"strIngredient1"=>"Grand Marnier"}, {"strIngredient1"=>"Cachaca"}, {"strIngredient1"=>"Peachtree schnapps"}, {"strIngredient1"=>"Wild Turkey"}, {"strIngredient1"=>"Cranberry vodka"}, {"strIngredient1"=>"Corona"}, {"strIngredient1"=>"Orange juice"}, {"strIngredient1"=>"Yukon Jack"}, {"strIngredient1"=>"Chocolate ice-cream"}, {"strIngredient1"=>"Coconut rum"}, {"strIngredient1"=>"Banana liqueur"}, {"strIngredient1"=>"Black Sambuca"}, {"strIngredient1"=>"Hot Damn"}, {"strIngredient1"=>"Mint"}, {"strIngredient1"=>"Campari"}, {"strIngredient1"=>"Ice"}, {"strIngredient1"=>"Sour mix"}, {"strIngredient1"=>"Absinthe"}, {"strIngredient1"=>"Whisky"}, {"strIngredient1"=>"Guinness stout"}, {"strIngredient1"=>"Vanilla ice-cream"}, {"strIngredient1"=>"Chambord raspberry liqueur"}, {"strIngredient1"=>"Jim Beam"}, {"strIngredient1"=>"Godiva liqueur"}, {"strIngredient1"=>"Fruit punch"}, {"strIngredient1"=>"Baileys irish cream"}, {"strIngredient1"=>"Zima"}, {"strIngredient1"=>"Blue Curacao"}, {"strIngredient1"=>"Coca-Cola"}, {"strIngredient1"=>"Maui"}, {"strIngredient1"=>"Frangelico"}, {"strIngredient1"=>"Bacardi Limon"}, {"strIngredient1"=>"Raspberry vodka"}, {"strIngredient1"=>"Green Creme de Menthe"}, {"strIngredient1"=>"Lemon peel"}, {"strIngredient1"=>"Prosecco"}, {"strIngredient1"=>"White Rum"}, {"strIngredient1"=>"Mezcal"}, {"strIngredient1"=>"Green Chartreuse"}, {"strIngredient1"=>"Grape Soda"}, {"strIngredient1"=>"Hot Chocolate"}, {"strIngredient1"=>"Blended Scotch"}, {"strIngredient1"=>"Rye whiskey"}]}
+"Iterating over my ingredients hash"
+"Creating Light rum"
+"Creating Applejack"
+"Creating Gin"
+"Creating Dark rum"
+"Creating Sweet Vermouth"
+"Creating Strawberry schnapps"
+"Creating Scotch"
+"Creating Apricot brandy"
+"Creating Triple sec"
+"Creating Southern Comfort"
+"Creating Orange bitters"
+"Creating Brandy"
+"Creating Lemon vodka"
+"Creating Blended whiskey"
+"Creating Dry Vermouth"
+"Creating Amaretto"
+"Creating Tea"
+"Creating Champagne"
+"Creating Coffee liqueur"
+"Creating Bourbon"
+"Creating Tequila"
+"Creating Vodka"
+"Creating Añejo rum"
+"Creating Bitters"
+"Creating Sugar"
+"Creating Kahlua"
+"Creating demerara Sugar"
+"Creating Dubonnet Rouge"
+"Creating Lime juice"
+"Creating Irish whiskey"
+"Creating Apple brandy"
+"Creating Carbonated water"
+"Creating Cherry brandy"
+"Creating Creme de Cacao"
+"Creating Grenadine"
+"Creating Port"
+"Creating Coffee brandy"
+"Creating Red wine"
+"Creating Rum"
+"Creating Grapefruit juice"
+"Creating Ricard"
+"Creating Sherry"
+"Creating Cognac"
+"Creating Sloe gin"
+"Creating Apple juice"
+"Creating Pineapple juice"
+"Creating Lemon juice"
+"Creating Sugar syrup"
+"Creating Milk"
+"Creating Strawberries"
+"Creating Chocolate syrup"
+"Creating Yoghurt"
+"Creating Mango"
+"Creating Ginger"
+"Creating Lime"
+"Creating Cantaloupe"
+"Creating Berries"
+"Creating Grapes"
+"Creating Kiwi"
+"Creating Tomato juice"
+"Creating Cocoa powder"
+"Creating Chocolate"
+"Creating Heavy cream"
+"Creating Galliano"
+"Creating Peach Vodka"
+"Creating Ouzo"
+"Creating Coffee"
+"Creating Spiced rum"
+"Creating Water"
+"Creating Espresso"
+"Creating Angelica root"
+"Creating Orange"
+"Creating Cranberries"
+"Creating Johnnie Walker"
+"Creating Apple cider"
+"Creating Everclear"
+"Creating Cranberry juice"
+"Creating Egg yolk"
+"Creating Egg"
+"Creating Grape juice"
+"Creating Peach nectar"
+"Creating Lemon"
+"Creating Firewater"
+"Creating Lemonade"
+"Creating Lager"
+"Creating Whiskey"
+"Creating Absolut Citron"
+"Creating Pisco"
+"Creating Irish cream"
+"Creating Ale"
+"Creating Chocolate liqueur"
+"Creating Midori melon liqueur"
+"Creating Sambuca"
+"Creating Cider"
+"Creating Sprite"
+"Creating 7-Up"
+"Creating Blackberry brandy"
+"Creating Peppermint schnapps"
+"Creating Creme de Cassis"
+"Creating Jack Daniels"
+"Creating Bailey's irish cream"
+"Creating 151 proof rum"
+"Creating Absolut Vodka"
+"Creating Goldschlager"
+"Creating Crown Royal"
+"Creating Cointreau"
+"Creating Vermouth"
+"Creating Advocaat"
+"Creating Absolut Kurant"
+"Creating Beer"
+"Creating Kool-Aid"
+"Creating Cherry Heering"
+"Creating White Creme de Menthe"
+"Creating Malibu rum"
+"Creating Vanilla vodka"
+"Creating Jägermeister"
+"Creating Kiwi liqueur"
+"Creating Grand Marnier"
+"Creating Cachaca"
+"Creating Peachtree schnapps"
+"Creating Wild Turkey"
+"Creating Cranberry vodka"
+"Creating Corona"
+"Creating Orange juice"
+"Creating Yukon Jack"
+"Creating Chocolate ice-cream"
+"Creating Coconut rum"
+"Creating Banana liqueur"
+"Creating Black Sambuca"
+"Creating Hot Damn"
+"Creating Mint"
+"Creating Campari"
+"Creating Ice"
+"Creating Sour mix"
+"Creating Absinthe"
+"Creating Whisky"
+"Creating Guinness stout"
+"Creating Vanilla ice-cream"
+"Creating Chambord raspberry liqueur"
+"Creating Jim Beam"
+"Creating Godiva liqueur"
+"Creating Fruit punch"
+"Creating Baileys irish cream"
+"Creating Zima"
+"Creating Blue Curacao"
+"Creating Coca-Cola"
+"Creating Maui"
+"Creating Frangelico"
+"Creating Bacardi Limon"
+"Creating Raspberry vodka"
+"Creating Green Creme de Menthe"
+"Creating Lemon peel"
+"Creating Prosecco"
+"Creating White Rum"
+"Creating Mezcal"
+"Creating Green Chartreuse"
+"Creating Grape Soda"
+"Creating Hot Chocolate"
+"Creating Blended Scotch"
+"Creating Rye whiskey"
+"finished!"
+➜  rails-mister-cocktail git:(master) ✗ rails db:seed
+warning ../../../package.json: No license field                                                                                          
+"Destroy everything"
+{"drinks"=>[{"strIngredient1"=>"Light rum"}, {"strIngredient1"=>"Applejack"}, {"strIngredient1"=>"Gin"}, {"strIngredient1"=>"Dark rum"}, {"strIngredient1"=>"Sweet Vermouth"}, {"strIngredient1"=>"Strawberry schnapps"}, {"strIngredient1"=>"Scotch"}, {"strIngredient1"=>"Apricot brandy"}, {"strIngredient1"=>"Triple sec"}, {"strIngredient1"=>"Southern Comfort"}, {"strIngredient1"=>"Orange bitters"}, {"strIngredient1"=>"Brandy"}, {"strIngredient1"=>"Lemon vodka"}, {"strIngredient1"=>"Blended whiskey"}, {"strIngredient1"=>"Dry Vermouth"}, {"strIngredient1"=>"Amaretto"}, {"strIngredient1"=>"Tea"}, {"strIngredient1"=>"Champagne"}, {"strIngredient1"=>"Coffee liqueur"}, {"strIngredient1"=>"Bourbon"}, {"strIngredient1"=>"Tequila"}, {"strIngredient1"=>"Vodka"}, {"strIngredient1"=>"Añejo rum"}, {"strIngredient1"=>"Bitters"}, {"strIngredient1"=>"Sugar"}, {"strIngredient1"=>"Kahlua"}, {"strIngredient1"=>"demerara Sugar"}, {"strIngredient1"=>"Dubonnet Rouge"}, {"strIngredient1"=>"Lime juice"}, {"strIngredient1"=>"Irish whiskey"}, {"strIngredient1"=>"Apple brandy"}, {"strIngredient1"=>"Carbonated water"}, {"strIngredient1"=>"Cherry brandy"}, {"strIngredient1"=>"Creme de Cacao"}, {"strIngredient1"=>"Grenadine"}, {"strIngredient1"=>"Port"}, {"strIngredient1"=>"Coffee brandy"}, {"strIngredient1"=>"Red wine"}, {"strIngredient1"=>"Rum"}, {"strIngredient1"=>"Grapefruit juice"}, {"strIngredient1"=>"Ricard"}, {"strIngredient1"=>"Sherry"}, {"strIngredient1"=>"Cognac"}, {"strIngredient1"=>"Sloe gin"}, {"strIngredient1"=>"Apple juice"}, {"strIngredient1"=>"Pineapple juice"}, {"strIngredient1"=>"Lemon juice"}, {"strIngredient1"=>"Sugar syrup"}, {"strIngredient1"=>"Milk"}, {"strIngredient1"=>"Strawberries"}, {"strIngredient1"=>"Chocolate syrup"}, {"strIngredient1"=>"Yoghurt"}, {"strIngredient1"=>"Mango"}, {"strIngredient1"=>"Ginger"}, {"strIngredient1"=>"Lime"}, {"strIngredient1"=>"Cantaloupe"}, {"strIngredient1"=>"Berries"}, {"strIngredient1"=>"Grapes"}, {"strIngredient1"=>"Kiwi"}, {"strIngredient1"=>"Tomato juice"}, {"strIngredient1"=>"Cocoa powder"}, {"strIngredient1"=>"Chocolate"}, {"strIngredient1"=>"Heavy cream"}, {"strIngredient1"=>"Galliano"}, {"strIngredient1"=>"Peach Vodka"}, {"strIngredient1"=>"Ouzo"}, {"strIngredient1"=>"Coffee"}, {"strIngredient1"=>"Spiced rum"}, {"strIngredient1"=>"Water"}, {"strIngredient1"=>"Espresso"}, {"strIngredient1"=>"Angelica root"}, {"strIngredient1"=>"Orange"}, {"strIngredient1"=>"Cranberries"}, {"strIngredient1"=>"Johnnie Walker"}, {"strIngredient1"=>"Apple cider"}, {"strIngredient1"=>"Everclear"}, {"strIngredient1"=>"Cranberry juice"}, {"strIngredient1"=>"Egg yolk"}, {"strIngredient1"=>"Egg"}, {"strIngredient1"=>"Grape juice"}, {"strIngredient1"=>"Peach nectar"}, {"strIngredient1"=>"Lemon"}, {"strIngredient1"=>"Firewater"}, {"strIngredient1"=>"Lemonade"}, {"strIngredient1"=>"Lager"}, {"strIngredient1"=>"Whiskey"}, {"strIngredient1"=>"Absolut Citron"}, {"strIngredient1"=>"Pisco"}, {"strIngredient1"=>"Irish cream"}, {"strIngredient1"=>"Ale"}, {"strIngredient1"=>"Chocolate liqueur"}, {"strIngredient1"=>"Midori melon liqueur"}, {"strIngredient1"=>"Sambuca"}, {"strIngredient1"=>"Cider"}, {"strIngredient1"=>"Sprite"}, {"strIngredient1"=>"7-Up"}, {"strIngredient1"=>"Blackberry brandy"}, {"strIngredient1"=>"Peppermint schnapps"}, {"strIngredient1"=>"Creme de Cassis"}, {"strIngredient1"=>"Jack Daniels"}, {"strIngredient1"=>"Bailey's irish cream"}, {"strIngredient1"=>"151 proof rum"}, {"strIngredient1"=>"Absolut Vodka"}, {"strIngredient1"=>"Goldschlager"}, {"strIngredient1"=>"Crown Royal"}, {"strIngredient1"=>"Cointreau"}, {"strIngredient1"=>"Vermouth"}, {"strIngredient1"=>"Advocaat"}, {"strIngredient1"=>"Absolut Kurant"}, {"strIngredient1"=>"Beer"}, {"strIngredient1"=>"Kool-Aid"}, {"strIngredient1"=>"Cherry Heering"}, {"strIngredient1"=>"White Creme de Menthe"}, {"strIngredient1"=>"Malibu rum"}, {"strIngredient1"=>"Vanilla vodka"}, {"strIngredient1"=>"Jägermeister"}, {"strIngredient1"=>"Kiwi liqueur"}, {"strIngredient1"=>"Grand Marnier"}, {"strIngredient1"=>"Cachaca"}, {"strIngredient1"=>"Peachtree schnapps"}, {"strIngredient1"=>"Wild Turkey"}, {"strIngredient1"=>"Cranberry vodka"}, {"strIngredient1"=>"Corona"}, {"strIngredient1"=>"Orange juice"}, {"strIngredient1"=>"Yukon Jack"}, {"strIngredient1"=>"Chocolate ice-cream"}, {"strIngredient1"=>"Coconut rum"}, {"strIngredient1"=>"Banana liqueur"}, {"strIngredient1"=>"Black Sambuca"}, {"strIngredient1"=>"Hot Damn"}, {"strIngredient1"=>"Mint"}, {"strIngredient1"=>"Campari"}, {"strIngredient1"=>"Ice"}, {"strIngredient1"=>"Sour mix"}, {"strIngredient1"=>"Absinthe"}, {"strIngredient1"=>"Whisky"}, {"strIngredient1"=>"Guinness stout"}, {"strIngredient1"=>"Vanilla ice-cream"}, {"strIngredient1"=>"Chambord raspberry liqueur"}, {"strIngredient1"=>"Jim Beam"}, {"strIngredient1"=>"Godiva liqueur"}, {"strIngredient1"=>"Fruit punch"}, {"strIngredient1"=>"Baileys irish cream"}, {"strIngredient1"=>"Zima"}, {"strIngredient1"=>"Blue Curacao"}, {"strIngredient1"=>"Coca-Cola"}, {"strIngredient1"=>"Maui"}, {"strIngredient1"=>"Frangelico"}, {"strIngredient1"=>"Bacardi Limon"}, {"strIngredient1"=>"Raspberry vodka"}, {"strIngredient1"=>"Green Creme de Menthe"}, {"strIngredient1"=>"Lemon peel"}, {"strIngredient1"=>"Prosecco"}, {"strIngredient1"=>"White Rum"}, {"strIngredient1"=>"Mezcal"}, {"strIngredient1"=>"Green Chartreuse"}, {"strIngredient1"=>"Grape Soda"}, {"strIngredient1"=>"Hot Chocolate"}, {"strIngredient1"=>"Blended Scotch"}, {"strIngredient1"=>"Rye whiskey"}]}
+"Iterating over my ingredients hash"
+"Creating Light rum"
+"Creating Applejack"
+"Creating Gin"
+"Creating Dark rum"
+"Creating Sweet Vermouth"
+"Creating Strawberry schnapps"
+"Creating Scotch"
+"Creating Apricot brandy"
+"Creating Triple sec"
+"Creating Southern Comfort"
+"Creating Orange bitters"
+"Creating Brandy"
+"Creating Lemon vodka"
+"Creating Blended whiskey"
+"Creating Dry Vermouth"
+"Creating Amaretto"
+"Creating Tea"
+"Creating Champagne"
+"Creating Coffee liqueur"
+"Creating Bourbon"
+"Creating Tequila"
+"Creating Vodka"
+"Creating Añejo rum"
+"Creating Bitters"
+"Creating Sugar"
+"Creating Kahlua"
+"Creating demerara Sugar"
+"Creating Dubonnet Rouge"
+"Creating Lime juice"
+"Creating Irish whiskey"
+"Creating Apple brandy"
+"Creating Carbonated water"
+"Creating Cherry brandy"
+"Creating Creme de Cacao"
+"Creating Grenadine"
+"Creating Port"
+"Creating Coffee brandy"
+"Creating Red wine"
+"Creating Rum"
+"Creating Grapefruit juice"
+"Creating Ricard"
+"Creating Sherry"
+"Creating Cognac"
+"Creating Sloe gin"
+"Creating Apple juice"
+"Creating Pineapple juice"
+"Creating Lemon juice"
+"Creating Sugar syrup"
+"Creating Milk"
+"Creating Strawberries"
+"Creating Chocolate syrup"
+"Creating Yoghurt"
+"Creating Mango"
+"Creating Ginger"
+"Creating Lime"
+"Creating Cantaloupe"
+"Creating Berries"
+"Creating Grapes"
+"Creating Kiwi"
+"Creating Tomato juice"
+"Creating Cocoa powder"
+"Creating Chocolate"
+"Creating Heavy cream"
+"Creating Galliano"
+"Creating Peach Vodka"
+"Creating Ouzo"
+"Creating Coffee"
+"Creating Spiced rum"
+"Creating Water"
+"Creating Espresso"
+"Creating Angelica root"
+"Creating Orange"
+"Creating Cranberries"
+"Creating Johnnie Walker"
+"Creating Apple cider"
+"Creating Everclear"
+"Creating Cranberry juice"
+"Creating Egg yolk"
+"Creating Egg"
+"Creating Grape juice"
+"Creating Peach nectar"
+"Creating Lemon"
+"Creating Firewater"
+"Creating Lemonade"
+"Creating Lager"
+"Creating Whiskey"
+"Creating Absolut Citron"
+"Creating Pisco"
+"Creating Irish cream"
+"Creating Ale"
+"Creating Chocolate liqueur"
+"Creating Midori melon liqueur"
+"Creating Sambuca"
+"Creating Cider"
+"Creating Sprite"
+"Creating 7-Up"
+"Creating Blackberry brandy"
+"Creating Peppermint schnapps"
+"Creating Creme de Cassis"
+"Creating Jack Daniels"
+"Creating Bailey's irish cream"
+"Creating 151 proof rum"
+"Creating Absolut Vodka"
+"Creating Goldschlager"
+"Creating Crown Royal"
+"Creating Cointreau"
+"Creating Vermouth"
+"Creating Advocaat"
+"Creating Absolut Kurant"
+"Creating Beer"
+"Creating Kool-Aid"
+"Creating Cherry Heering"
+"Creating White Creme de Menthe"
+"Creating Malibu rum"
+"Creating Vanilla vodka"
+"Creating Jägermeister"
+"Creating Kiwi liqueur"
+"Creating Grand Marnier"
+"Creating Cachaca"
+"Creating Peachtree schnapps"
+"Creating Wild Turkey"
+"Creating Cranberry vodka"
+"Creating Corona"
+"Creating Orange juice"
+"Creating Yukon Jack"
+"Creating Chocolate ice-cream"
+"Creating Coconut rum"
+"Creating Banana liqueur"
+"Creating Black Sambuca"
+"Creating Hot Damn"
+"Creating Mint"
+"Creating Campari"
+"Creating Ice"
+"Creating Sour mix"
+"Creating Absinthe"
+"Creating Whisky"
+"Creating Guinness stout"
+"Creating Vanilla ice-cream"
+"Creating Chambord raspberry liqueur"
+"Creating Jim Beam"
+"Creating Godiva liqueur"
+"Creating Fruit punch"
+"Creating Baileys irish cream"
+"Creating Zima"
+"Creating Blue Curacao"
+"Creating Coca-Cola"
+"Creating Maui"
+"Creating Frangelico"
+"Creating Bacardi Limon"
+"Creating Raspberry vodka"
+"Creating Green Creme de Menthe"
+"Creating Lemon peel"
+"Creating Prosecco"
+"Creating White Rum"
+"Creating Mezcal"
+"Creating Green Chartreuse"
+"Creating Grape Soda"
+"Creating Hot Chocolate"
+"Creating Blended Scotch"
+"Creating Rye whiskey"
+"finished!"
+➜  rails-mister-cocktail git:(master) ✗ rails c
+Running via Spring preloader in process 1374
+Loading development environment (Rails 5.2.3)
+irb(main):001:0> Ingredient.all
+  Ingredient Load (0.2ms)  SELECT  "ingredients".* FROM "ingredients" LIMIT $1  [["LIMIT", 11]]
+=> #<ActiveRecord::Relation [#<Ingredient id: 161, name: nil, created_at: "2019-07-12 11:03:54", updated_at: "2019-07-12 11:03:54">]>
+irb(main):002:0> exit
+➜  rails-mister-cocktail git:(master) ✗ rails db:seed
+warning ../../../package.json: No license field                                                                                          
+"Destroy everything"
+{"drinks"=>[{"strIngredient1"=>"Light rum"}, {"strIngredient1"=>"Applejack"}, {"strIngredient1"=>"Gin"}, {"strIngredient1"=>"Dark rum"}, {"strIngredient1"=>"Sweet Vermouth"}, {"strIngredient1"=>"Strawberry schnapps"}, {"strIngredient1"=>"Scotch"}, {"strIngredient1"=>"Apricot brandy"}, {"strIngredient1"=>"Triple sec"}, {"strIngredient1"=>"Southern Comfort"}, {"strIngredient1"=>"Orange bitters"}, {"strIngredient1"=>"Brandy"}, {"strIngredient1"=>"Lemon vodka"}, {"strIngredient1"=>"Blended whiskey"}, {"strIngredient1"=>"Dry Vermouth"}, {"strIngredient1"=>"Amaretto"}, {"strIngredient1"=>"Tea"}, {"strIngredient1"=>"Champagne"}, {"strIngredient1"=>"Coffee liqueur"}, {"strIngredient1"=>"Bourbon"}, {"strIngredient1"=>"Tequila"}, {"strIngredient1"=>"Vodka"}, {"strIngredient1"=>"Añejo rum"}, {"strIngredient1"=>"Bitters"}, {"strIngredient1"=>"Sugar"}, {"strIngredient1"=>"Kahlua"}, {"strIngredient1"=>"demerara Sugar"}, {"strIngredient1"=>"Dubonnet Rouge"}, {"strIngredient1"=>"Lime juice"}, {"strIngredient1"=>"Irish whiskey"}, {"strIngredient1"=>"Apple brandy"}, {"strIngredient1"=>"Carbonated water"}, {"strIngredient1"=>"Cherry brandy"}, {"strIngredient1"=>"Creme de Cacao"}, {"strIngredient1"=>"Grenadine"}, {"strIngredient1"=>"Port"}, {"strIngredient1"=>"Coffee brandy"}, {"strIngredient1"=>"Red wine"}, {"strIngredient1"=>"Rum"}, {"strIngredient1"=>"Grapefruit juice"}, {"strIngredient1"=>"Ricard"}, {"strIngredient1"=>"Sherry"}, {"strIngredient1"=>"Cognac"}, {"strIngredient1"=>"Sloe gin"}, {"strIngredient1"=>"Apple juice"}, {"strIngredient1"=>"Pineapple juice"}, {"strIngredient1"=>"Lemon juice"}, {"strIngredient1"=>"Sugar syrup"}, {"strIngredient1"=>"Milk"}, {"strIngredient1"=>"Strawberries"}, {"strIngredient1"=>"Chocolate syrup"}, {"strIngredient1"=>"Yoghurt"}, {"strIngredient1"=>"Mango"}, {"strIngredient1"=>"Ginger"}, {"strIngredient1"=>"Lime"}, {"strIngredient1"=>"Cantaloupe"}, {"strIngredient1"=>"Berries"}, {"strIngredient1"=>"Grapes"}, {"strIngredient1"=>"Kiwi"}, {"strIngredient1"=>"Tomato juice"}, {"strIngredient1"=>"Cocoa powder"}, {"strIngredient1"=>"Chocolate"}, {"strIngredient1"=>"Heavy cream"}, {"strIngredient1"=>"Galliano"}, {"strIngredient1"=>"Peach Vodka"}, {"strIngredient1"=>"Ouzo"}, {"strIngredient1"=>"Coffee"}, {"strIngredient1"=>"Spiced rum"}, {"strIngredient1"=>"Water"}, {"strIngredient1"=>"Espresso"}, {"strIngredient1"=>"Angelica root"}, {"strIngredient1"=>"Orange"}, {"strIngredient1"=>"Cranberries"}, {"strIngredient1"=>"Johnnie Walker"}, {"strIngredient1"=>"Apple cider"}, {"strIngredient1"=>"Everclear"}, {"strIngredient1"=>"Cranberry juice"}, {"strIngredient1"=>"Egg yolk"}, {"strIngredient1"=>"Egg"}, {"strIngredient1"=>"Grape juice"}, {"strIngredient1"=>"Peach nectar"}, {"strIngredient1"=>"Lemon"}, {"strIngredient1"=>"Firewater"}, {"strIngredient1"=>"Lemonade"}, {"strIngredient1"=>"Lager"}, {"strIngredient1"=>"Whiskey"}, {"strIngredient1"=>"Absolut Citron"}, {"strIngredient1"=>"Pisco"}, {"strIngredient1"=>"Irish cream"}, {"strIngredient1"=>"Ale"}, {"strIngredient1"=>"Chocolate liqueur"}, {"strIngredient1"=>"Midori melon liqueur"}, {"strIngredient1"=>"Sambuca"}, {"strIngredient1"=>"Cider"}, {"strIngredient1"=>"Sprite"}, {"strIngredient1"=>"7-Up"}, {"strIngredient1"=>"Blackberry brandy"}, {"strIngredient1"=>"Peppermint schnapps"}, {"strIngredient1"=>"Creme de Cassis"}, {"strIngredient1"=>"Jack Daniels"}, {"strIngredient1"=>"Bailey's irish cream"}, {"strIngredient1"=>"151 proof rum"}, {"strIngredient1"=>"Absolut Vodka"}, {"strIngredient1"=>"Goldschlager"}, {"strIngredient1"=>"Crown Royal"}, {"strIngredient1"=>"Cointreau"}, {"strIngredient1"=>"Vermouth"}, {"strIngredient1"=>"Advocaat"}, {"strIngredient1"=>"Absolut Kurant"}, {"strIngredient1"=>"Beer"}, {"strIngredient1"=>"Kool-Aid"}, {"strIngredient1"=>"Cherry Heering"}, {"strIngredient1"=>"White Creme de Menthe"}, {"strIngredient1"=>"Malibu rum"}, {"strIngredient1"=>"Vanilla vodka"}, {"strIngredient1"=>"Jägermeister"}, {"strIngredient1"=>"Kiwi liqueur"}, {"strIngredient1"=>"Grand Marnier"}, {"strIngredient1"=>"Cachaca"}, {"strIngredient1"=>"Peachtree schnapps"}, {"strIngredient1"=>"Wild Turkey"}, {"strIngredient1"=>"Cranberry vodka"}, {"strIngredient1"=>"Corona"}, {"strIngredient1"=>"Orange juice"}, {"strIngredient1"=>"Yukon Jack"}, {"strIngredient1"=>"Chocolate ice-cream"}, {"strIngredient1"=>"Coconut rum"}, {"strIngredient1"=>"Banana liqueur"}, {"strIngredient1"=>"Black Sambuca"}, {"strIngredient1"=>"Hot Damn"}, {"strIngredient1"=>"Mint"}, {"strIngredient1"=>"Campari"}, {"strIngredient1"=>"Ice"}, {"strIngredient1"=>"Sour mix"}, {"strIngredient1"=>"Absinthe"}, {"strIngredient1"=>"Whisky"}, {"strIngredient1"=>"Guinness stout"}, {"strIngredient1"=>"Vanilla ice-cream"}, {"strIngredient1"=>"Chambord raspberry liqueur"}, {"strIngredient1"=>"Jim Beam"}, {"strIngredient1"=>"Godiva liqueur"}, {"strIngredient1"=>"Fruit punch"}, {"strIngredient1"=>"Baileys irish cream"}, {"strIngredient1"=>"Zima"}, {"strIngredient1"=>"Blue Curacao"}, {"strIngredient1"=>"Coca-Cola"}, {"strIngredient1"=>"Maui"}, {"strIngredient1"=>"Frangelico"}, {"strIngredient1"=>"Bacardi Limon"}, {"strIngredient1"=>"Raspberry vodka"}, {"strIngredient1"=>"Green Creme de Menthe"}, {"strIngredient1"=>"Lemon peel"}, {"strIngredient1"=>"Prosecco"}, {"strIngredient1"=>"White Rum"}, {"strIngredient1"=>"Mezcal"}, {"strIngredient1"=>"Green Chartreuse"}, {"strIngredient1"=>"Grape Soda"}, {"strIngredient1"=>"Hot Chocolate"}, {"strIngredient1"=>"Blended Scotch"}, {"strIngredient1"=>"Rye whiskey"}]}
+"Iterating over my ingredients hash"
+"Creating Light rum"
+"Creating Applejack"
+rails aborted!
+ActiveRecord::RecordInvalid: Validation failed: Name has already been taken
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/seeds.rb:26:in `block in <top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/seeds.rb:24:in `each'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/seeds.rb:24:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/rails:9:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/spring:15:in `<top (required)>'
+bin/rails:3:in `load'
+bin/rails:3:in `<main>'
+Tasks: TOP => db:seed
+(See full trace by running task with --trace)
+➜  rails-mister-cocktail git:(master) ✗ rails c  
+Running via Spring preloader in process 1790
+Loading development environment (Rails 5.2.3)
+irb(main):001:0> Ingredient.all
+  Ingredient Load (0.2ms)  SELECT  "ingredients".* FROM "ingredients" LIMIT $1  [["LIMIT", 11]]
+=> #<ActiveRecord::Relation [#<Ingredient id: 162, name: nil, created_at: "2019-07-12 11:04:24", updated_at: "2019-07-12 11:04:24">]>
+irb(main):002:0> Ingredient.last.destroy
+  Ingredient Load (0.7ms)  SELECT  "ingredients".* FROM "ingredients" ORDER BY "ingredients"."id" DESC LIMIT $1  [["LIMIT", 1]]
+   (0.3ms)  BEGIN
+  Ingredient Destroy (0.7ms)  DELETE FROM "ingredients" WHERE "ingredients"."id" = $1  [["id", 162]]
+   (2.0ms)  COMMIT
+=> #<Ingredient id: 162, name: nil, created_at: "2019-07-12 11:04:24", updated_at: "2019-07-12 11:04:24">
+irb(main):003:0> Ingredient.all
+  Ingredient Load (0.6ms)  SELECT  "ingredients".* FROM "ingredients" LIMIT $1  [["LIMIT", 11]]
+=> #<ActiveRecord::Relation []>
+irb(main):004:0> exit
+➜  rails-mister-cocktail git:(master) ✗ rails db:seed
+warning ../../../package.json: No license field                                                                                          
+"Destroy everything"
+{"drinks"=>[{"strIngredient1"=>"Light rum"}, {"strIngredient1"=>"Applejack"}, {"strIngredient1"=>"Gin"}, {"strIngredient1"=>"Dark rum"}, {"strIngredient1"=>"Sweet Vermouth"}, {"strIngredient1"=>"Strawberry schnapps"}, {"strIngredient1"=>"Scotch"}, {"strIngredient1"=>"Apricot brandy"}, {"strIngredient1"=>"Triple sec"}, {"strIngredient1"=>"Southern Comfort"}, {"strIngredient1"=>"Orange bitters"}, {"strIngredient1"=>"Brandy"}, {"strIngredient1"=>"Lemon vodka"}, {"strIngredient1"=>"Blended whiskey"}, {"strIngredient1"=>"Dry Vermouth"}, {"strIngredient1"=>"Amaretto"}, {"strIngredient1"=>"Tea"}, {"strIngredient1"=>"Champagne"}, {"strIngredient1"=>"Coffee liqueur"}, {"strIngredient1"=>"Bourbon"}, {"strIngredient1"=>"Tequila"}, {"strIngredient1"=>"Vodka"}, {"strIngredient1"=>"Añejo rum"}, {"strIngredient1"=>"Bitters"}, {"strIngredient1"=>"Sugar"}, {"strIngredient1"=>"Kahlua"}, {"strIngredient1"=>"demerara Sugar"}, {"strIngredient1"=>"Dubonnet Rouge"}, {"strIngredient1"=>"Lime juice"}, {"strIngredient1"=>"Irish whiskey"}, {"strIngredient1"=>"Apple brandy"}, {"strIngredient1"=>"Carbonated water"}, {"strIngredient1"=>"Cherry brandy"}, {"strIngredient1"=>"Creme de Cacao"}, {"strIngredient1"=>"Grenadine"}, {"strIngredient1"=>"Port"}, {"strIngredient1"=>"Coffee brandy"}, {"strIngredient1"=>"Red wine"}, {"strIngredient1"=>"Rum"}, {"strIngredient1"=>"Grapefruit juice"}, {"strIngredient1"=>"Ricard"}, {"strIngredient1"=>"Sherry"}, {"strIngredient1"=>"Cognac"}, {"strIngredient1"=>"Sloe gin"}, {"strIngredient1"=>"Apple juice"}, {"strIngredient1"=>"Pineapple juice"}, {"strIngredient1"=>"Lemon juice"}, {"strIngredient1"=>"Sugar syrup"}, {"strIngredient1"=>"Milk"}, {"strIngredient1"=>"Strawberries"}, {"strIngredient1"=>"Chocolate syrup"}, {"strIngredient1"=>"Yoghurt"}, {"strIngredient1"=>"Mango"}, {"strIngredient1"=>"Ginger"}, {"strIngredient1"=>"Lime"}, {"strIngredient1"=>"Cantaloupe"}, {"strIngredient1"=>"Berries"}, {"strIngredient1"=>"Grapes"}, {"strIngredient1"=>"Kiwi"}, {"strIngredient1"=>"Tomato juice"}, {"strIngredient1"=>"Cocoa powder"}, {"strIngredient1"=>"Chocolate"}, {"strIngredient1"=>"Heavy cream"}, {"strIngredient1"=>"Galliano"}, {"strIngredient1"=>"Peach Vodka"}, {"strIngredient1"=>"Ouzo"}, {"strIngredient1"=>"Coffee"}, {"strIngredient1"=>"Spiced rum"}, {"strIngredient1"=>"Water"}, {"strIngredient1"=>"Espresso"}, {"strIngredient1"=>"Angelica root"}, {"strIngredient1"=>"Orange"}, {"strIngredient1"=>"Cranberries"}, {"strIngredient1"=>"Johnnie Walker"}, {"strIngredient1"=>"Apple cider"}, {"strIngredient1"=>"Everclear"}, {"strIngredient1"=>"Cranberry juice"}, {"strIngredient1"=>"Egg yolk"}, {"strIngredient1"=>"Egg"}, {"strIngredient1"=>"Grape juice"}, {"strIngredient1"=>"Peach nectar"}, {"strIngredient1"=>"Lemon"}, {"strIngredient1"=>"Firewater"}, {"strIngredient1"=>"Lemonade"}, {"strIngredient1"=>"Lager"}, {"strIngredient1"=>"Whiskey"}, {"strIngredient1"=>"Absolut Citron"}, {"strIngredient1"=>"Pisco"}, {"strIngredient1"=>"Irish cream"}, {"strIngredient1"=>"Ale"}, {"strIngredient1"=>"Chocolate liqueur"}, {"strIngredient1"=>"Midori melon liqueur"}, {"strIngredient1"=>"Sambuca"}, {"strIngredient1"=>"Cider"}, {"strIngredient1"=>"Sprite"}, {"strIngredient1"=>"7-Up"}, {"strIngredient1"=>"Blackberry brandy"}, {"strIngredient1"=>"Peppermint schnapps"}, {"strIngredient1"=>"Creme de Cassis"}, {"strIngredient1"=>"Jack Daniels"}, {"strIngredient1"=>"Bailey's irish cream"}, {"strIngredient1"=>"151 proof rum"}, {"strIngredient1"=>"Absolut Vodka"}, {"strIngredient1"=>"Goldschlager"}, {"strIngredient1"=>"Crown Royal"}, {"strIngredient1"=>"Cointreau"}, {"strIngredient1"=>"Vermouth"}, {"strIngredient1"=>"Advocaat"}, {"strIngredient1"=>"Absolut Kurant"}, {"strIngredient1"=>"Beer"}, {"strIngredient1"=>"Kool-Aid"}, {"strIngredient1"=>"Cherry Heering"}, {"strIngredient1"=>"White Creme de Menthe"}, {"strIngredient1"=>"Malibu rum"}, {"strIngredient1"=>"Vanilla vodka"}, {"strIngredient1"=>"Jägermeister"}, {"strIngredient1"=>"Kiwi liqueur"}, {"strIngredient1"=>"Grand Marnier"}, {"strIngredient1"=>"Cachaca"}, {"strIngredient1"=>"Peachtree schnapps"}, {"strIngredient1"=>"Wild Turkey"}, {"strIngredient1"=>"Cranberry vodka"}, {"strIngredient1"=>"Corona"}, {"strIngredient1"=>"Orange juice"}, {"strIngredient1"=>"Yukon Jack"}, {"strIngredient1"=>"Chocolate ice-cream"}, {"strIngredient1"=>"Coconut rum"}, {"strIngredient1"=>"Banana liqueur"}, {"strIngredient1"=>"Black Sambuca"}, {"strIngredient1"=>"Hot Damn"}, {"strIngredient1"=>"Mint"}, {"strIngredient1"=>"Campari"}, {"strIngredient1"=>"Ice"}, {"strIngredient1"=>"Sour mix"}, {"strIngredient1"=>"Absinthe"}, {"strIngredient1"=>"Whisky"}, {"strIngredient1"=>"Guinness stout"}, {"strIngredient1"=>"Vanilla ice-cream"}, {"strIngredient1"=>"Chambord raspberry liqueur"}, {"strIngredient1"=>"Jim Beam"}, {"strIngredient1"=>"Godiva liqueur"}, {"strIngredient1"=>"Fruit punch"}, {"strIngredient1"=>"Baileys irish cream"}, {"strIngredient1"=>"Zima"}, {"strIngredient1"=>"Blue Curacao"}, {"strIngredient1"=>"Coca-Cola"}, {"strIngredient1"=>"Maui"}, {"strIngredient1"=>"Frangelico"}, {"strIngredient1"=>"Bacardi Limon"}, {"strIngredient1"=>"Raspberry vodka"}, {"strIngredient1"=>"Green Creme de Menthe"}, {"strIngredient1"=>"Lemon peel"}, {"strIngredient1"=>"Prosecco"}, {"strIngredient1"=>"White Rum"}, {"strIngredient1"=>"Mezcal"}, {"strIngredient1"=>"Green Chartreuse"}, {"strIngredient1"=>"Grape Soda"}, {"strIngredient1"=>"Hot Chocolate"}, {"strIngredient1"=>"Blended Scotch"}, {"strIngredient1"=>"Rye whiskey"}]}
+"Iterating over my ingredients hash"
+"Creating Light rum"
+"Creating Applejack"
+rails aborted!
+ActiveRecord::RecordInvalid: Validation failed: Name has already been taken
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/seeds.rb:26:in `block in <top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/seeds.rb:24:in `each'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/seeds.rb:24:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/rails:9:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/spring:15:in `<top (required)>'
+bin/rails:3:in `load'
+bin/rails:3:in `<main>'
+Tasks: TOP => db:seed
+(See full trace by running task with --trace)
+➜  rails-mister-cocktail git:(master) ✗ rails c
+Running via Spring preloader in process 2121
+Loading development environment (Rails 5.2.3)
+irb(main):001:0> Ingredient.lasst
+Traceback (most recent call last):
+        1: from (irb):1
+NoMethodError (undefined method `lasst' for #<Class:0x00007f9028994d68>)
+Did you mean?  last
+               last!
+               class
+irb(main):002:0> Ingredient.last
+  Ingredient Load (0.4ms)  SELECT  "ingredients".* FROM "ingredients" ORDER BY "ingredients"."id" DESC LIMIT $1  [["LIMIT", 1]]
+=> #<Ingredient id: 163, name: nil, created_at: "2019-07-12 11:05:11", updated_at: "2019-07-12 11:05:11">
+irb(main):003:0> Ingredient.find(163).destroy
+  Ingredient Load (0.6ms)  SELECT  "ingredients".* FROM "ingredients" WHERE "ingredients"."id" = $1 LIMIT $2  [["id", 163], ["LIMIT", 1]]
+   (0.2ms)  BEGIN
+  Ingredient Destroy (1.0ms)  DELETE FROM "ingredients" WHERE "ingredients"."id" = $1  [["id", 163]]
+   (4.0ms)  COMMIT
+=> #<Ingredient id: 163, name: nil, created_at: "2019-07-12 11:05:11", updated_at: "2019-07-12 11:05:11">
+irb(main):004:0> Ingredient.all
+  Ingredient Load (0.6ms)  SELECT  "ingredients".* FROM "ingredients" LIMIT $1  [["LIMIT", 11]]
+=> #<ActiveRecord::Relation []>
+irb(main):005:0> Ingredient.last
+  Ingredient Load (0.6ms)  SELECT  "ingredients".* FROM "ingredients" ORDER BY "ingredients"."id" DESC LIMIT $1  [["LIMIT", 1]]
+=> nil
+irb(main):006:0> exit
+➜  rails-mister-cocktail git:(master) ✗ rails db:seed
+warning ../../../package.json: No license field                                                                                          
+"Destroy everything"
+{"drinks"=>[{"strIngredient1"=>"Light rum"}, {"strIngredient1"=>"Applejack"}, {"strIngredient1"=>"Gin"}, {"strIngredient1"=>"Dark rum"}, {"strIngredient1"=>"Sweet Vermouth"}, {"strIngredient1"=>"Strawberry schnapps"}, {"strIngredient1"=>"Scotch"}, {"strIngredient1"=>"Apricot brandy"}, {"strIngredient1"=>"Triple sec"}, {"strIngredient1"=>"Southern Comfort"}, {"strIngredient1"=>"Orange bitters"}, {"strIngredient1"=>"Brandy"}, {"strIngredient1"=>"Lemon vodka"}, {"strIngredient1"=>"Blended whiskey"}, {"strIngredient1"=>"Dry Vermouth"}, {"strIngredient1"=>"Amaretto"}, {"strIngredient1"=>"Tea"}, {"strIngredient1"=>"Champagne"}, {"strIngredient1"=>"Coffee liqueur"}, {"strIngredient1"=>"Bourbon"}, {"strIngredient1"=>"Tequila"}, {"strIngredient1"=>"Vodka"}, {"strIngredient1"=>"Añejo rum"}, {"strIngredient1"=>"Bitters"}, {"strIngredient1"=>"Sugar"}, {"strIngredient1"=>"Kahlua"}, {"strIngredient1"=>"demerara Sugar"}, {"strIngredient1"=>"Dubonnet Rouge"}, {"strIngredient1"=>"Lime juice"}, {"strIngredient1"=>"Irish whiskey"}, {"strIngredient1"=>"Apple brandy"}, {"strIngredient1"=>"Carbonated water"}, {"strIngredient1"=>"Cherry brandy"}, {"strIngredient1"=>"Creme de Cacao"}, {"strIngredient1"=>"Grenadine"}, {"strIngredient1"=>"Port"}, {"strIngredient1"=>"Coffee brandy"}, {"strIngredient1"=>"Red wine"}, {"strIngredient1"=>"Rum"}, {"strIngredient1"=>"Grapefruit juice"}, {"strIngredient1"=>"Ricard"}, {"strIngredient1"=>"Sherry"}, {"strIngredient1"=>"Cognac"}, {"strIngredient1"=>"Sloe gin"}, {"strIngredient1"=>"Apple juice"}, {"strIngredient1"=>"Pineapple juice"}, {"strIngredient1"=>"Lemon juice"}, {"strIngredient1"=>"Sugar syrup"}, {"strIngredient1"=>"Milk"}, {"strIngredient1"=>"Strawberries"}, {"strIngredient1"=>"Chocolate syrup"}, {"strIngredient1"=>"Yoghurt"}, {"strIngredient1"=>"Mango"}, {"strIngredient1"=>"Ginger"}, {"strIngredient1"=>"Lime"}, {"strIngredient1"=>"Cantaloupe"}, {"strIngredient1"=>"Berries"}, {"strIngredient1"=>"Grapes"}, {"strIngredient1"=>"Kiwi"}, {"strIngredient1"=>"Tomato juice"}, {"strIngredient1"=>"Cocoa powder"}, {"strIngredient1"=>"Chocolate"}, {"strIngredient1"=>"Heavy cream"}, {"strIngredient1"=>"Galliano"}, {"strIngredient1"=>"Peach Vodka"}, {"strIngredient1"=>"Ouzo"}, {"strIngredient1"=>"Coffee"}, {"strIngredient1"=>"Spiced rum"}, {"strIngredient1"=>"Water"}, {"strIngredient1"=>"Espresso"}, {"strIngredient1"=>"Angelica root"}, {"strIngredient1"=>"Orange"}, {"strIngredient1"=>"Cranberries"}, {"strIngredient1"=>"Johnnie Walker"}, {"strIngredient1"=>"Apple cider"}, {"strIngredient1"=>"Everclear"}, {"strIngredient1"=>"Cranberry juice"}, {"strIngredient1"=>"Egg yolk"}, {"strIngredient1"=>"Egg"}, {"strIngredient1"=>"Grape juice"}, {"strIngredient1"=>"Peach nectar"}, {"strIngredient1"=>"Lemon"}, {"strIngredient1"=>"Firewater"}, {"strIngredient1"=>"Lemonade"}, {"strIngredient1"=>"Lager"}, {"strIngredient1"=>"Whiskey"}, {"strIngredient1"=>"Absolut Citron"}, {"strIngredient1"=>"Pisco"}, {"strIngredient1"=>"Irish cream"}, {"strIngredient1"=>"Ale"}, {"strIngredient1"=>"Chocolate liqueur"}, {"strIngredient1"=>"Midori melon liqueur"}, {"strIngredient1"=>"Sambuca"}, {"strIngredient1"=>"Cider"}, {"strIngredient1"=>"Sprite"}, {"strIngredient1"=>"7-Up"}, {"strIngredient1"=>"Blackberry brandy"}, {"strIngredient1"=>"Peppermint schnapps"}, {"strIngredient1"=>"Creme de Cassis"}, {"strIngredient1"=>"Jack Daniels"}, {"strIngredient1"=>"Bailey's irish cream"}, {"strIngredient1"=>"151 proof rum"}, {"strIngredient1"=>"Absolut Vodka"}, {"strIngredient1"=>"Goldschlager"}, {"strIngredient1"=>"Crown Royal"}, {"strIngredient1"=>"Cointreau"}, {"strIngredient1"=>"Vermouth"}, {"strIngredient1"=>"Advocaat"}, {"strIngredient1"=>"Absolut Kurant"}, {"strIngredient1"=>"Beer"}, {"strIngredient1"=>"Kool-Aid"}, {"strIngredient1"=>"Cherry Heering"}, {"strIngredient1"=>"White Creme de Menthe"}, {"strIngredient1"=>"Malibu rum"}, {"strIngredient1"=>"Vanilla vodka"}, {"strIngredient1"=>"Jägermeister"}, {"strIngredient1"=>"Kiwi liqueur"}, {"strIngredient1"=>"Grand Marnier"}, {"strIngredient1"=>"Cachaca"}, {"strIngredient1"=>"Peachtree schnapps"}, {"strIngredient1"=>"Wild Turkey"}, {"strIngredient1"=>"Cranberry vodka"}, {"strIngredient1"=>"Corona"}, {"strIngredient1"=>"Orange juice"}, {"strIngredient1"=>"Yukon Jack"}, {"strIngredient1"=>"Chocolate ice-cream"}, {"strIngredient1"=>"Coconut rum"}, {"strIngredient1"=>"Banana liqueur"}, {"strIngredient1"=>"Black Sambuca"}, {"strIngredient1"=>"Hot Damn"}, {"strIngredient1"=>"Mint"}, {"strIngredient1"=>"Campari"}, {"strIngredient1"=>"Ice"}, {"strIngredient1"=>"Sour mix"}, {"strIngredient1"=>"Absinthe"}, {"strIngredient1"=>"Whisky"}, {"strIngredient1"=>"Guinness stout"}, {"strIngredient1"=>"Vanilla ice-cream"}, {"strIngredient1"=>"Chambord raspberry liqueur"}, {"strIngredient1"=>"Jim Beam"}, {"strIngredient1"=>"Godiva liqueur"}, {"strIngredient1"=>"Fruit punch"}, {"strIngredient1"=>"Baileys irish cream"}, {"strIngredient1"=>"Zima"}, {"strIngredient1"=>"Blue Curacao"}, {"strIngredient1"=>"Coca-Cola"}, {"strIngredient1"=>"Maui"}, {"strIngredient1"=>"Frangelico"}, {"strIngredient1"=>"Bacardi Limon"}, {"strIngredient1"=>"Raspberry vodka"}, {"strIngredient1"=>"Green Creme de Menthe"}, {"strIngredient1"=>"Lemon peel"}, {"strIngredient1"=>"Prosecco"}, {"strIngredient1"=>"White Rum"}, {"strIngredient1"=>"Mezcal"}, {"strIngredient1"=>"Green Chartreuse"}, {"strIngredient1"=>"Grape Soda"}, {"strIngredient1"=>"Hot Chocolate"}, {"strIngredient1"=>"Blended Scotch"}, {"strIngredient1"=>"Rye whiskey"}]}
+"Iterating over my ingredients hash"
+"Creating Light rum"
+"Creating Applejack"
+rails aborted!
+ActiveRecord::RecordInvalid: Validation failed: Name has already been taken
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/seeds.rb:26:in `block in <top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/seeds.rb:24:in `each'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/db/seeds.rb:24:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/rails:9:in `<top (required)>'
+/home/cshorter/code/cshorter-mc/rails-mister-cocktail/bin/spring:15:in `<top (required)>'
+bin/rails:3:in `load'
+bin/rails:3:in `<main>'
+Tasks: TOP => db:seed
+(See full trace by running task with --trace)
+➜  rails-mister-cocktail git:(master) ✗ rails c
+Running via Spring preloader in process 2483
+Loading development environment (Rails 5.2.3)
+irb(main):001:0> Ingredient.last
+  Ingredient Load (0.3ms)  SELECT  "ingredients".* FROM "ingredients" ORDER BY "ingredients"."id" DESC LIMIT $1  [["LIMIT", 1]]
+=> #<Ingredient id: 164, name: nil, created_at: "2019-07-12 11:06:08", updated_at: "2019-07-12 11:06:08">
+irb(main):002:0> Ingredient.destoy_all
+Traceback (most recent call last):
+        1: from (irb):2
+NoMethodError (undefined method `destoy_all' for #<Class:0x000055ae51d339c0>)
+Did you mean?  destroy_all
+irb(main):003:0> Ingredient.destroy_all
+  Ingredient Load (0.8ms)  SELECT "ingredients".* FROM "ingredients"
+   (0.2ms)  BEGIN
+  Ingredient Destroy (1.1ms)  DELETE FROM "ingredients" WHERE "ingredients"."id" = $1  [["id", 164]]
+   (3.7ms)  COMMIT
+=> [#<Ingredient id: 164, name: nil, created_at: "2019-07-12 11:06:08", updated_at: "2019-07-12 11:06:08">]
+irb(main):004:0> exit
+➜  rails-mister-cocktail git:(master) ✗ rails c
+Running via Spring preloader in process 2916
+Loading development environment (Rails 5.2.3)
+irb(main):001:0> exit
+➜  rails-mister-cocktail git:(master) ✗ rails db:seed
+warning ../../../package.json: No license field                                                                                          
+"Destroy everything"
+"Iterating over my ingredients hash"
+"Creating Light rum"
+"Creating Applejack"
+"Creating Gin"
+"Creating Dark rum"
+"Creating Sweet Vermouth"
+"Creating Strawberry schnapps"
+"Creating Scotch"
+"Creating Apricot brandy"
+"Creating Triple sec"
+"Creating Southern Comfort"
+"Creating Orange bitters"
+"Creating Brandy"
+"Creating Lemon vodka"
+"Creating Blended whiskey"
+"Creating Dry Vermouth"
+"Creating Amaretto"
+"Creating Tea"
+"Creating Champagne"
+"Creating Coffee liqueur"
+"Creating Bourbon"
+"Creating Tequila"
+"Creating Vodka"
+"Creating Añejo rum"
+"Creating Bitters"
+"Creating Sugar"
+"Creating Kahlua"
+"Creating demerara Sugar"
+"Creating Dubonnet Rouge"
+"Creating Lime juice"
+"Creating Irish whiskey"
+"Creating Apple brandy"
+"Creating Carbonated water"
+"Creating Cherry brandy"
+"Creating Creme de Cacao"
+"Creating Grenadine"
+"Creating Port"
+"Creating Coffee brandy"
+"Creating Red wine"
+"Creating Rum"
+"Creating Grapefruit juice"
+"Creating Ricard"
+"Creating Sherry"
+"Creating Cognac"
+"Creating Sloe gin"
+"Creating Apple juice"
+"Creating Pineapple juice"
+"Creating Lemon juice"
+"Creating Sugar syrup"
+"Creating Milk"
+"Creating Strawberries"
+"Creating Chocolate syrup"
+"Creating Yoghurt"
+"Creating Mango"
+"Creating Ginger"
+"Creating Lime"
+"Creating Cantaloupe"
+"Creating Berries"
+"Creating Grapes"
+"Creating Kiwi"
+"Creating Tomato juice"
+"Creating Cocoa powder"
+"Creating Chocolate"
+"Creating Heavy cream"
+"Creating Galliano"
+"Creating Peach Vodka"
+"Creating Ouzo"
+"Creating Coffee"
+"Creating Spiced rum"
+"Creating Water"
+"Creating Espresso"
+"Creating Angelica root"
+"Creating Orange"
+"Creating Cranberries"
+"Creating Johnnie Walker"
+"Creating Apple cider"
+"Creating Everclear"
+"Creating Cranberry juice"
+"Creating Egg yolk"
+"Creating Egg"
+"Creating Grape juice"
+"Creating Peach nectar"
+"Creating Lemon"
+"Creating Firewater"
+"Creating Lemonade"
+"Creating Lager"
+"Creating Whiskey"
+"Creating Absolut Citron"
+"Creating Pisco"
+"Creating Irish cream"
+"Creating Ale"
+"Creating Chocolate liqueur"
+"Creating Midori melon liqueur"
+"Creating Sambuca"
+"Creating Cider"
+"Creating Sprite"
+"Creating 7-Up"
+"Creating Blackberry brandy"
+"Creating Peppermint schnapps"
+"Creating Creme de Cassis"
+"Creating Jack Daniels"
+"Creating Bailey's irish cream"
+"Creating 151 proof rum"
+"Creating Absolut Vodka"
+"Creating Goldschlager"
+"Creating Crown Royal"
+"Creating Cointreau"
+"Creating Vermouth"
+"Creating Advocaat"
+"Creating Absolut Kurant"
+"Creating Beer"
+"Creating Kool-Aid"
+"Creating Cherry Heering"
+"Creating White Creme de Menthe"
+"Creating Malibu rum"
+"Creating Vanilla vodka"
+"Creating Jägermeister"
+"Creating Kiwi liqueur"
+"Creating Grand Marnier"
+"Creating Cachaca"
+"Creating Peachtree schnapps"
+"Creating Wild Turkey"
+"Creating Cranberry vodka"
+"Creating Corona"
+"Creating Orange juice"
+"Creating Yukon Jack"
+"Creating Chocolate ice-cream"
+"Creating Coconut rum"
+"Creating Banana liqueur"
+"Creating Black Sambuca"
+"Creating Hot Damn"
+"Creating Mint"
+"Creating Campari"
+"Creating Ice"
+"Creating Sour mix"
+"Creating Absinthe"
+"Creating Whisky"
+"Creating Guinness stout"
+"Creating Vanilla ice-cream"
+"Creating Chambord raspberry liqueur"
+"Creating Jim Beam"
+"Creating Godiva liqueur"
+"Creating Fruit punch"
+"Creating Baileys irish cream"
+"Creating Zima"
+"Creating Blue Curacao"
+"Creating Coca-Cola"
+"Creating Maui"
+"Creating Frangelico"
+"Creating Bacardi Limon"
+"Creating Raspberry vodka"
+"Creating Green Creme de Menthe"
+"Creating Lemon peel"
+"Creating Prosecco"
+"Creating White Rum"
+"Creating Mezcal"
+"Creating Green Chartreuse"
+"Creating Grape Soda"
+"Creating Hot Chocolate"
+"Creating Blended Scotch"
+"Creating Rye whiskey"
+"finished!"
+➜  rails-mister-cocktail git:(master) ✗ rails c
+Running via Spring preloader in process 3719
+Loading development environment (Rails 5.2.3)
+irb(main):001:0> c = Cocktail.new(name: "Singapore Sling")
+=> #<Cocktail id: nil, name: "Singapore Sling", created_at: nil, updated_at: nil>
+irb(main):002:0> c.save
+   (0.4ms)  BEGIN
+  Cocktail Exists (0.8ms)  SELECT  1 AS one FROM "cocktails" WHERE "cocktails"."name" = $1 LIMIT $2  [["name", "Singapore Sling"], ["LIMIT", 1]]
+  Cocktail Create (0.6ms)  INSERT INTO "cocktails" ("name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["name", "Singapore Sling"], ["created_at", "2019-07-12 11:11:38.492736"], ["updated_at", "2019-07-12 11:11:38.492736"]]
+   (11.0ms)  COMMIT
+=> true
+irb(main):003:0> c2 = Cocktail.new(name: "Singapore Sling")
+=> #<Cocktail id: nil, name: "Singapore Sling", created_at: nil, updated_at: nil>
+irb(main):004:0> c2.save
+   (0.3ms)  BEGIN
+  Cocktail Exists (0.6ms)  SELECT  1 AS one FROM "cocktails" WHERE "cocktails"."name" = $1 LIMIT $2  [["name", "Singapore Sling"], ["LIMIT", 1]]
+   (0.2ms)  ROLLBACK
+=> false
+irb(main):005:0> c2.save!
+   (0.4ms)  BEGIN
+  Cocktail Exists (0.6ms)  SELECT  1 AS one FROM "cocktails" WHERE "cocktails"."name" = $1 LIMIT $2  [["name", "Singapore Sling"], ["LIMIT", 1]]
+   (0.2ms)  ROLLBACK
+Traceback (most recent call last):
+        1: from (irb):5
+ActiveRecord::RecordInvalid (Validation failed: Name has already been taken)
+irb(main):006:0> c2.errors
+=> #<ActiveModel::Errors:0x00007f9028f25cc8 @base=#<Cocktail id: nil, name: "Singapore Sling", created_at: nil, updated_at: nil>, @messages={:name=>["has already been taken"]}, @details={:name=>[{:error=>:taken, :value=>"Singapore Sling"}]}>
+irb(main):007:0> 
+
+
+9)
+
+ 
+
